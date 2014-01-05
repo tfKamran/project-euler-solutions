@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
@@ -47,7 +48,7 @@ static class Common
 		int getNumerator(string fraction);
 		int getDenominator(string fraction);
 		string reduceFraction(string fraction);
-		string* listPermutations(string startingString);
+		vector<string> listPermutations(string startingString);
 } common;
 
 Common::Common()
@@ -489,16 +490,22 @@ string Common::reduceFraction(string fraction)
 	return fraction;
 }
 
-string* Common::listPermutations(string startingString)
+vector<string> Common::listPermutations(string startingString)
 {
-	string list[1000000];
-	string firstCharacter = startingString.substr(0, startingString.length() - 1);
-	string remaingCharacters = stringReplace(startingString, firstCharacter, "");
+	vector<string> list;
 	
-	string subList[] = listPermutations(remaingCharacters);
-	
-	for (int currentCharacterIndex = 0; currentCharacterIndex < remaingCharacters.length(); i++)
-		list[currentCharacterIndex] = firstCharacter + subList[currentCharacterIndex];
+	if (startingString.length() == 1)
+		list.push_back(startingString);
+	else
+		for (int currentCharacterIndex = 0; currentCharacterIndex < startingString.length(); currentCharacterIndex++)
+		{
+			string firstCharacter = startingString.substr(currentCharacterIndex, 1);
+			string remaingCharacters = stringReplace(startingString, firstCharacter, "");
+			vector<string> subList = listPermutations(remaingCharacters);
+			
+			for (int i = 0; i < subList.size(); ++i)
+				list.push_back(firstCharacter + subList.at(i));
+		}
 	
 	return list;
 }
