@@ -6,8 +6,8 @@ int main()
 {
 	vector<string> permutation = common.listPermutations("012");
 	
-	for (int i = 0; i < permutation.size(); ++i)
-		cout << permutation.at(i) << endl;
+	for (int number = 0; number < 1000000; number++)
+		
 	
 	common.finalize();
 	return 0;
