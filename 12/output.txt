@@ -1,1 +1,0 @@
-The first triangle to have over 576 divisors is 76576500
