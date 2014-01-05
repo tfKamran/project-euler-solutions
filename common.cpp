@@ -47,6 +47,7 @@ static class Common
 		int getNumerator(string fraction);
 		int getDenominator(string fraction);
 		string reduceFraction(string fraction);
+		string* listPermutations(string startingString);
 } common;
 
 Common::Common()
@@ -486,4 +487,18 @@ string Common::reduceFraction(string fraction)
 			+ common.CStr(getDenominator(fraction) / i);
 		
 	return fraction;
+}
+
+string* Common::listPermutations(string startingString)
+{
+	string list[1000000];
+	string firstCharacter = startingString.substr(0, startingString.length() - 1);
+	string remaingCharacters = stringReplace(startingString, firstCharacter, "");
+	
+	string subList[] = listPermutations(remaingCharacters);
+	
+	for (int currentCharacterIndex = 0; currentCharacterIndex < remaingCharacters.length(); i++)
+		list[currentCharacterIndex] = firstCharacter + subList[currentCharacterIndex];
+	
+	return list;
 }
