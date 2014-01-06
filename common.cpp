@@ -38,6 +38,7 @@ static class Common
 		long long raiseTo(long long base, int power);
 		string raiseToSpecial(string base, int power);
 		string toBinary(long long decimalNumber, int digits);
+		string toBinary(long long decimalNumber);
 		long long sumOfDigits(string inputNumber);
 		long long sumOfDigits(int inputNumber);
 		string factorial(string inputNumber);
@@ -51,6 +52,8 @@ static class Common
 		vector<string> listPermutations(string startingString);
 		vector<string> listRotations(string startingString);
 		bool isPrime(long long inputNumber);
+		bool isPalindromic(string inputNumber);
+		bool isPalindromic(long long inputNumber);
 } common;
 
 Common::Common()
@@ -392,6 +395,13 @@ string Common::toBinary(long long decimalNumber, int digits)
 	return binary;
 }
 
+string Common::toBinary(long long decimalNumber)
+{
+	long long digits = 0;
+	for (; raiseTo(2, digits) <= decimalNumber; digits++);
+	return toBinary(decimalNumber, digits);
+}
+
 long long Common::sumOfDigits(string inputNumber)
 {
 	ostringstream stringStream;
@@ -540,4 +550,24 @@ bool Common::isPrime(long long inputNumber)
 			return false;
 	
 	return true;
+}
+
+bool Common::isPalindromic(string inputNumber)
+{
+	long long firstDigit = 0;
+	long long lastDigit = inputNumber.length() - 1;
+	
+// 	if (lastDigit < 1)
+// 		return false;
+	
+	for (; lastDigit > firstDigit; firstDigit++, lastDigit--)
+		if (inputNumber.substr(firstDigit, 1) != inputNumber.substr(lastDigit, 1))
+			return false;
+			
+	return true;
+}
+
+bool Common::isPalindromic(long long inputNumber)
+{
+	return isPalindromic(CStr(inputNumber));
 }
