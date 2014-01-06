@@ -49,16 +49,18 @@ static class Common
 		int getDenominator(string fraction);
 		string reduceFraction(string fraction);
 		vector<string> listPermutations(string startingString);
+		vector<string> listRotations(string startingString);
+		bool isPrime(long long inputNumber);
 } common;
 
 Common::Common()
 {
-	startingTime = clock();
+	startingTime = clock()/1000;
 }
 
 void Common::finalize()
 {
-	cout << endl << "Time taken: " << (clock() - startingTime)/1000 << " ms" << endl;
+	cout << endl << "Time taken: " << (clock()/1000) - startingTime << " ms" << endl;
 }
 
 string Common::CStr(long long inputNumber)
@@ -508,4 +510,34 @@ vector<string> Common::listPermutations(string startingString)
 		}
 	
 	return list;
+}
+
+vector<string> Common::listRotations(string startingString)
+{
+	vector<string> list;
+	string rotatedString = startingString;
+	
+	if (startingString.length() == 1)
+		list.push_back(startingString);
+	else
+	{
+		rotatedString = rotatedString.substr(1, rotatedString.length() - 1) + rotatedString.substr(0, 1);
+		list.push_back(rotatedString);
+		while (rotatedString != startingString)
+		{
+			rotatedString = rotatedString.substr(1, rotatedString.length() - 1) + rotatedString.substr(0, 1);
+			list.push_back(rotatedString);
+		}
+	}
+	
+	return list;
+}
+
+bool Common::isPrime(long long inputNumber)
+{
+	for (long long i = 2; i <= inputNumber/2; i++)
+		if (inputNumber % i == 0)
+			return false;
+	
+	return true;
 }
