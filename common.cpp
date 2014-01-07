@@ -54,6 +54,7 @@ static class Common
 		bool isPrime(long long inputNumber);
 		bool isPalindromic(string inputNumber);
 		bool isPalindromic(long long inputNumber);
+		bool isPandigital(string inputString, string requiredCharacters);
 } common;
 
 Common::Common()
@@ -545,6 +546,9 @@ vector<string> Common::listRotations(string startingString)
 
 bool Common::isPrime(long long inputNumber)
 {
+	if (inputNumber < 2)
+		return false;
+	
 	for (long long i = 2; i <= inputNumber/2; i++)
 		if (inputNumber % i == 0)
 			return false;
@@ -557,9 +561,6 @@ bool Common::isPalindromic(string inputNumber)
 	long long firstDigit = 0;
 	long long lastDigit = inputNumber.length() - 1;
 	
-// 	if (lastDigit < 1)
-// 		return false;
-	
 	for (; lastDigit > firstDigit; firstDigit++, lastDigit--)
 		if (inputNumber.substr(firstDigit, 1) != inputNumber.substr(lastDigit, 1))
 			return false;
@@ -570,4 +571,18 @@ bool Common::isPalindromic(string inputNumber)
 bool Common::isPalindromic(long long inputNumber)
 {
 	return isPalindromic(CStr(inputNumber));
+}
+
+bool Common::isPandigital(string inputString, string requiredCharacters)
+{
+	if (inputString.length() != requiredCharacters.length())
+		return false;
+	
+	for (long long character = 0; character < requiredCharacters.length(); character++)
+		inputString =  stringReplace(inputString, requiredCharacters.substr(character, 1), "");
+	
+	if (inputString.length() == 0)
+		return true;
+	
+	return false;
 }

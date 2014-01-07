@@ -1,0 +1,1 @@
+The required number is obtained by multiplying 1, 1, 5, 3, 7, 2, 1,  which yeilds 210
