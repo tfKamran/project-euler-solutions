@@ -23,6 +23,7 @@ static class Common
 		long long CLong(string inputString);
 		int countLinesInFile(string inputFile);
 		string* fetchFromFile(string inputFile);
+		vector<string> readFromFile(string inputFile);
 			long long stringIndexOf(string inputString, string partString);
 			long long stringLastIndexOf(string inputString, string partString);
 			bool stringContains(string inputString, string partString);
@@ -105,17 +106,29 @@ int Common::countLinesInFile(string inputFile)
 
 string* Common::fetchFromFile(string inputFile)
 {
+  vector<string> linesFromFile = readFromFile(inputFile);
+	
+	for (long long lineNumber = 0; lineNumber < linesFromFile.size(); lineNumber++)
+		inputFromFile[lineNumber] = linesFromFile.at(lineNumber);
+	
+	inputFromFile[linesFromFile.size()] = "\0";
+	
+	return inputFromFile;
+}
+
+vector<string> Common::readFromFile(string inputFile)
+{
   ifstream inputReader (inputFile.c_str());
   
 	long long i = 0;
+	vector<string> linesFromFile;
 	
 	if (countLinesInFile(inputFile) > 1)
 	{
 		string line;
 		for (; getline(inputReader, line); i++)
-			inputFromFile[i] = line;
+			linesFromFile.push_back(line);
 		inputReader.close();
-		inputFromFile[i] = '\0';
 	}
 	else
 	{
@@ -125,15 +138,14 @@ string* Common::fetchFromFile(string inputFile)
 		long long indexOfComma = stringIndexOf(line, ",");
 		for (; indexOfComma > -1; i++)
 		{
-			inputFromFile[i] = line.substr(0, indexOfComma);
+			linesFromFile.push_back(line.substr(0, indexOfComma));
 			line = line.substr(indexOfComma + 1, line.length() - indexOfComma);
 			indexOfComma = stringIndexOf(line, ",");
 		}
-		inputFromFile[i] = line;
-		inputFromFile[i + 1] = '\0';
+		linesFromFile.push_back(line);
 	}
 	
-	return inputFromFile;
+	return linesFromFile;
 }
 
 	long long Common::stringIndexOf(string inputString, string partString)
