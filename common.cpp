@@ -37,6 +37,7 @@ static class Common
 		string divide(string number1, string number2, string approxQuotient);
 		string divideForDecimalFraction(int number1, int number2);
 		long long raiseTo(long long base, int power);
+		long long raiseTo(int base, int power, int numberOfLastDigits);
 		string raiseToSpecial(string base, int power);
 		string toBinary(long long decimalNumber, int digits);
 		string toBinary(long long decimalNumber);
@@ -373,6 +374,24 @@ long long Common::raiseTo(long long base, int power)
 	
 	for (; power > 1; power--)
 		returnValue *= base;
+	
+	return returnValue;
+}
+
+long long Common::raiseTo(int base, int power, int numberOfLastDigits)
+{
+	long long returnValue = base;
+	
+	for (;power > 1; power--)
+	{
+		returnValue = returnValue * base;
+		
+		if (returnValue > raiseTo(10, numberOfLastDigits + 1) - 1)
+		{
+			string stringReturnValue = CStr(returnValue);
+			returnValue = CLong(stringReturnValue.substr(stringReturnValue.length() - numberOfLastDigits, numberOfLastDigits));
+		}
+	}
 	
 	return returnValue;
 }
