@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
@@ -29,6 +30,7 @@ static class Common
 			bool stringContains(string inputString, string partString);
 			string stringReplace(string inputString, string partString, string newPartString);
 			string stringReplaceAll(string inputString, string partString, string newPartString);
+			string stringReplaceAt(string inputString, long long position, string newContent);
 		void writeToFile(string inputFile, string fileContent);
 		string add(string number1, string number2);
 		string subtract(string number1, string number2);
@@ -48,9 +50,19 @@ static class Common
 		int lookForRepititionLength(string number);
 		bool isAllSame(string inputString);
 		bool hasRepeatitivePattern(string inputString, int repeatationLength);
-		int getNumerator(string fraction);
-		int getDenominator(string fraction);
+		long long getNumerator(string fraction);
+		long long getDenominator(string fraction);
+		string getNumeratorInString(string fraction);
+		string getDenominatorInString(string fraction);
 		string reduceFraction(string fraction);
+		string addFractions(string fraction1, string fraction2);
+		string subtractFractions(string fraction1, string fraction2);
+		string multiplyFractions(string fraction1, string fraction2);
+		string divideFractions(string fraction1, string fraction2);
+		string addFractionsInString(string fraction1, string fraction2);
+		string subtractFractionsInString(string fraction1, string fraction2);
+		string multiplyFractionsInString(string fraction1, string fraction2);
+		string divideFractionsInString(string fraction1, string fraction2);
 		vector<string> listPermutations(string startingString);
 		vector<string> listRotations(string startingString);
 		bool isPrime(long long inputNumber);
@@ -151,6 +163,9 @@ vector<string> Common::readFromFile(string inputFile)
 
 	long long Common::stringIndexOf(string inputString, string partString)
 	{
+		if (inputString.length() < partString.length())
+			return -1;
+			
 		for (long long index = 0; index <= inputString.length() - partString.length(); index++)
 			if (inputString.substr(index, partString.length()) == partString)
 				return index;
@@ -160,6 +175,9 @@ vector<string> Common::readFromFile(string inputFile)
 
 	long long Common::stringLastIndexOf(string inputString, string partString)
 	{
+		if (inputString.length() < partString.length())
+			return -1;
+		
 		for (long long index = inputString.length() - partString.length(); index >= 0; index--)
 			if (inputString.substr(index, partString.length()) == partString)
 				return index;
@@ -169,6 +187,9 @@ vector<string> Common::readFromFile(string inputFile)
 
 	bool Common::stringContains(string inputString, string partString)
 	{
+		if (inputString.length() < partString.length())
+			return false;
+		
 		for (long long index = 0; index <= inputString.length() - partString.length(); index++)
 			if (inputString.substr(index, partString.length()) == partString)
 				return true;
@@ -192,6 +213,13 @@ vector<string> Common::readFromFile(string inputFile)
 			locationOfPartString = stringIndexOf(inputString, partString);
 			inputString = inputString.substr(0, locationOfPartString) + newPartString + inputString.substr(locationOfPartString + partString.length(), inputString.length() - locationOfPartString - partString.length());
 		}
+		
+		return inputString;
+	}
+	
+	string Common::stringReplaceAt(string inputString, long long position, string newContent)
+	{
+		inputString = inputString.substr(0, position) + newContent + inputString.substr(position + newContent.length(), inputString.length() - position - newContent.length());
 		
 		return inputString;
 	}
@@ -298,17 +326,6 @@ string Common::multiply(string number1, string number2)
 	string returnValue = "";
 	int lengthOfFirst = number1.length();
 	int lengthOfSecond = number2.length();
-	
-// 	if (lengthOfFirst < lengthOfSecond)
-// 	{
-// 		string swapString = number1;
-// 		number1 = number2;
-// 		number2 = swapString;
-// 		
-// 		int swapInt = lengthOfFirst;
-// 		lengthOfFirst = lengthOfSecond;
-// 		lengthOfSecond = swapInt;
-// 	}
 	
 	int carry = 0;
 	int product;
@@ -513,25 +530,102 @@ bool Common::hasRepeatitivePattern(string inputString, int repeatationLength)
 		return false;
 }
 
-int Common::getNumerator(string fraction)
+long long Common::getNumerator(string fraction)
 {
-	return common.CInt(fraction.substr(0, common.stringIndexOf(fraction, "/")));
+	return CLong(fraction.substr(0, stringIndexOf(fraction, "/")));
 }
 
-int Common::getDenominator(string fraction)
+long long Common::getDenominator(string fraction)
 {
-	return common.CInt(fraction.substr(common.stringIndexOf(fraction, "/") + 1, fraction.length() - common.stringIndexOf(fraction, "/")));
+	return CLong(fraction.substr(stringIndexOf(fraction, "/") + 1, fraction.length() - stringIndexOf(fraction, "/")));
+}
+
+string Common::getNumeratorInString(string fraction)
+{
+	return (fraction.substr(0, stringIndexOf(fraction, "/")));
+}
+
+string Common::getDenominatorInString(string fraction)
+{
+	return (fraction.substr(stringIndexOf(fraction, "/") + 1, fraction.length() - stringIndexOf(fraction, "/")));
 }
 
 string Common::reduceFraction(string fraction)
 {
-	for (int i = getNumerator(fraction); i > 1; i--)
-		if (getNumerator(fraction) % i == 0 && getDenominator(fraction) % i == 0)
-			return common.CStr(getNumerator(fraction) / i)
-			+ "/"
-			+ common.CStr(getDenominator(fraction) / i);
+	long long numerator = getNumerator(fraction);
+	long long denominator = getDenominator(fraction);
+	
+	if (numerator == 0)
+		return "0/1";
+	
+	if (denominator == numerator)
+		return "1/1";
+	else if (denominator < numerator && isPrime(denominator))
+		if (numerator % denominator == 0)
+			return common.CStr(numerator / denominator) + "/1";
+	else if (denominator > numerator && isPrime(numerator))
+		if (denominator % numerator == 0)
+			return "1/" + common.CStr(denominator / numerator);
+	else
+		for (long long i = denominator; i > 1; i--)
+			if (numerator % i == 0 && denominator % i == 0)
+				return common.CStr(numerator / i)
+				+ "/"
+				+ common.CStr(denominator / i);
 		
 	return fraction;
+}
+
+string Common::addFractions(string fraction1, string fraction2)
+{
+	return CStr((getNumerator(fraction1) * getDenominator(fraction2)) + (getNumerator(fraction2) * getDenominator(fraction1)))
+	+ "/"
+	+ CStr(getDenominator(fraction1) * getDenominator(fraction2));
+}
+
+string Common::subtractFractions(string fraction1, string fraction2)
+{
+	return CStr((getNumerator(fraction1) * getDenominator(fraction2)) - (getNumerator(fraction2) * getDenominator(fraction1)))
+	+ "/"
+	+ CStr(getDenominator(fraction1) * getDenominator(fraction2));
+}
+
+string Common::multiplyFractions(string fraction1, string fraction2)
+{
+	return CStr(getNumerator(fraction1) * getNumerator(fraction2))
+	+ "/"
+	+ CStr(getDenominator(fraction1) * getDenominator(fraction2));
+}
+
+string Common::divideFractions(string fraction1, string fraction2)
+{
+	return multiplyFractions(fraction1, CStr(getDenominator(fraction2)) + "/" + CStr(getNumerator(fraction2)));
+}
+
+string Common::addFractionsInString(string fraction1, string fraction2)
+{ 
+	return add(multiply(getNumeratorInString(fraction1), getDenominatorInString(fraction2)), multiply(getNumeratorInString(fraction2), getDenominatorInString(fraction1)))
+	+ "/"
+	+ multiply(getDenominatorInString(fraction1), getDenominatorInString(fraction2));
+}
+
+string Common::subtractFractionsInString(string fraction1, string fraction2)
+{
+	return subtract(multiply(getNumeratorInString(fraction1), getDenominatorInString(fraction2)), multiply(getNumeratorInString(fraction2), getDenominatorInString(fraction1)))
+	+ "/"
+	+ multiply(getDenominatorInString(fraction1), getDenominatorInString(fraction2));
+}
+
+string Common::multiplyFractionsInString(string fraction1, string fraction2)
+{
+	return multiply(getNumeratorInString(fraction1), getNumeratorInString(fraction2))
+	+ "/"
+	+ multiply(getDenominatorInString(fraction1), getDenominatorInString(fraction2));
+}
+
+string Common::divideFractionsInString(string fraction1, string fraction2)
+{
+	return multiplyFractionsInString(fraction1, getDenominatorInString(fraction2) + "/" + getNumeratorInString(fraction2));
 }
 
 vector<string> Common::listPermutations(string startingString)

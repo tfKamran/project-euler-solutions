@@ -26,6 +26,7 @@ int main()
 	
 	cout << "With a = " << coefficientA[i] << " and b = " << coefficientB[i] << " the Eulers equation yeids " << i << " prime numbers. The product of these coeefficients is " << coefficientA[i] * coefficientB[i] << endl;
 	
+	common.finalize();
 	return 0;
 }
 
