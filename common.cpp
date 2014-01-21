@@ -12,8 +12,11 @@ using namespace std;
 static class Common
 {
 	public:
-		string inputFromFile[10000];
 		clock_t startingTime;
+		vector<string> memoiozedStringDivisionsFractions;
+		vector<string> memoiozedStringDivisionsQuotients;
+		vector<string> memoiozedStringFactorials;
+		string inputFromFile[10000];
 	
 	public:
 		Common();
@@ -37,6 +40,7 @@ static class Common
 		string multiply(string number1, string number2);
 		string divide(string number1, string number2);
 		string divide(string number1, string number2, string approxQuotient);
+			int compareNumbersInString(string number1, string number2);
 		string divideForDecimalFraction(int number1, int number2);
 		long long raiseTo(long long base, int power);
 		long long raiseTo(int base, int power, int numberOfLastDigits);
@@ -46,6 +50,7 @@ static class Common
 		long long sumOfDigits(string inputNumber);
 		long long sumOfDigits(int inputNumber);
 		string factorial(string inputNumber);
+		vector<string> memoizeFactorialUpto(long long limit);
 		long long factorial(long long inputNumber);
 		int lookForRepititionLength(string number);
 		bool isAllSame(string inputString);
@@ -69,11 +74,16 @@ static class Common
 		bool isPalindromic(string inputNumber);
 		bool isPalindromic(long long inputNumber);
 		bool isPandigital(string inputString, string requiredCharacters);
+		long long combination(long long n, long long r);
+		string combination(string n, string r);
 } common;
 
 Common::Common()
 {
 	startingTime = clock()/1000;
+	
+	memoiozedStringDivisionsFractions.push_back("null");
+	memoiozedStringDivisionsQuotients.push_back("null");
 }
 
 void Common::finalize()
@@ -357,17 +367,63 @@ string Common::multiply(string number1, string number2)
 
 string Common::divide(string number1, string number2)
 {
-	return divide(number1, number2, "1");
+	vector<string>::iterator indexOfMemory = find(memoiozedStringDivisionsFractions.begin(), memoiozedStringDivisionsFractions.end(), number1 + "/" + number2);
+	if (indexOfMemory != memoiozedStringDivisionsFractions.end())
+		return memoiozedStringDivisionsQuotients.at(distance(memoiozedStringDivisionsFractions.begin(), indexOfMemory));
+	
+	if (number1.length() < 19)
+		return CStr(CLong(number1) / CLong(number2));
+	
+	long long partDivisor;
+	string approxQuotient;
+	if (number2.length() < 19)
+		partDivisor = CLong(number2);
+	else
+		partDivisor = CLong(number2.substr(0, 18));
+	
+	approxQuotient = CStr(CLong(number1.substr(0, 18)) / partDivisor);
+	while (number1.length() > approxQuotient.length() + number2.length() - 1)
+		approxQuotient = approxQuotient + "0";
+	
+	while (compareNumbersInString(number1, approxQuotient) < 0)
+		approxQuotient = approxQuotient.substr(0, approxQuotient.length() - 1);
+	
+	string returnValue = divide(number1, number2, approxQuotient);
+	
+	memoiozedStringDivisionsFractions.insert(memoiozedStringDivisionsFractions.begin(), number1 + "/" + number2);
+	memoiozedStringDivisionsQuotients.insert(memoiozedStringDivisionsQuotients.begin(), returnValue);
+	
+	return returnValue;
 }
 
 string Common::divide(string number1, string number2, string approxQuotient)
 {
 	string returnValue;
+	returnValue = approxQuotient;
 	
-	for (returnValue = approxQuotient; multiply(number2, returnValue) != number1; returnValue = add(returnValue, "1"));
+	while (true)
+	{
+		switch (compareNumbersInString(multiply(number2, returnValue), number1))
+		{
+			case 0:
+				return returnValue;
+				break;
+			case -1:
+				returnValue = add(returnValue, "1");
+				break;
+			case 1:
+				returnValue = subtract(returnValue, "1");
+				break;
+		}
+	}
 	
 	return returnValue;
 }
+
+	int Common::compareNumbersInString(string number1, string number2)
+	{
+		return number1.compare(number2);
+	}
 
 string Common::divideForDecimalFraction(int number1, int number2)
 {
@@ -472,10 +528,31 @@ long long Common::sumOfDigits(int inputNumber)
 
 string Common::factorial(string inputNumber)
 {
-	if (inputNumber != "1")
-		return common.multiply(factorial(common.subtract(inputNumber, "1")), inputNumber);
-	else
+	if (inputNumber == "0")
 		return "1";
+	
+	if (inputNumber.length() < 19 && memoiozedStringFactorials.size() > CLong(inputNumber))
+		return memoiozedStringFactorials.at(CLong(inputNumber) - 1);
+	else
+	{
+		if (inputNumber != "1")
+			return common.multiply(factorial(common.subtract(inputNumber, "1")), inputNumber);
+		else
+			return "1";
+	}
+}
+
+vector<string> Common::memoizeFactorialUpto(long long limit)
+{
+	string currentFactorial = "1";
+	
+	for (long long index = 1; index <= limit; index++)
+	{
+		currentFactorial = multiply(currentFactorial, CStr(index));
+		memoiozedStringFactorials.push_back(currentFactorial);
+	}
+	
+	return memoiozedStringFactorials;
 }
 
 long long Common::factorial(long long inputNumber)
@@ -710,4 +787,16 @@ bool Common::isPandigital(string inputString, string requiredCharacters)
 		return true;
 	
 	return false;
+}
+
+long long Common::combination(long long n, long long r)
+{
+	return factorial(n) /
+		(factorial(r) * factorial(n - r));
+}
+
+string Common::combination(string n, string r)
+{
+	return divide(factorial(n),
+		(multiply(factorial(r), factorial(subtract(n, r)))));
 }
