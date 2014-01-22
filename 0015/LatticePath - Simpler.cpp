@@ -8,5 +8,6 @@ int main()
 {
 	cout << "The number of possible paths is " << common.divide(common.factorial(TWICEGRID), (common.multiply(common.factorial(GRID), common.factorial(common.subtract(TWICEGRID, GRID)))), "137846528800") << endl;
 	
+	common.finalize();
 	return 0;
 }

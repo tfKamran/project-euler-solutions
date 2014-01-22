@@ -50,7 +50,7 @@ static class Common
 		long long sumOfDigits(string inputNumber);
 		long long sumOfDigits(int inputNumber);
 		string factorial(string inputNumber);
-		vector<string> memoizeFactorialUpto(long long limit);
+		vector<string> memoizeFactorialsUpto(long long limit);
 		long long factorial(long long inputNumber);
 		int lookForRepititionLength(string number);
 		bool isAllSame(string inputString);
@@ -400,21 +400,18 @@ string Common::divide(string number1, string number2, string approxQuotient)
 {
 	string returnValue;
 	returnValue = approxQuotient;
+	int comparisonResult;
 	
 	while (true)
 	{
-		switch (compareNumbersInString(multiply(number2, returnValue), number1))
-		{
-			case 0:
+		comparisonResult = compareNumbersInString(multiply(number2, returnValue), number1);
+		
+		if (comparisonResult == 0)
 				return returnValue;
-				break;
-			case -1:
+		else if (comparisonResult < 0)
 				returnValue = add(returnValue, "1");
-				break;
-			case 1:
+		else if (comparisonResult > 0)
 				returnValue = subtract(returnValue, "1");
-				break;
-		}
 	}
 	
 	return returnValue;
@@ -422,7 +419,28 @@ string Common::divide(string number1, string number2, string approxQuotient)
 
 	int Common::compareNumbersInString(string number1, string number2)
 	{
-		return number1.compare(number2);
+		int returnValue = 0;
+		
+		if (number1.length() > number2.length())
+			returnValue = 1;
+		else if (number1.length() < number2.length())
+			returnValue = -1;
+		else
+		{
+			for (int index = 0; index < number1.length(); index++)
+				if (CLong(number1.substr(index, 1)) > CLong(number2.substr(index, 1)))
+				{
+					returnValue = 1;
+					break;
+				}
+				else if (CLong(number1.substr(index, 1)) < CLong(number2.substr(index, 1)))
+				{
+					returnValue = -1;
+					break;
+				}
+		}
+		
+		return returnValue;
 	}
 
 string Common::divideForDecimalFraction(int number1, int number2)
@@ -542,7 +560,7 @@ string Common::factorial(string inputNumber)
 	}
 }
 
-vector<string> Common::memoizeFactorialUpto(long long limit)
+vector<string> Common::memoizeFactorialsUpto(long long limit)
 {
 	string currentFactorial = "1";
 	
