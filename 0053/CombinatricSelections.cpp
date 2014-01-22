@@ -8,8 +8,6 @@ int main()
 	
 	common.memoizeFactorialsUpto(100);
 	
-// 	cout << common.compareNumbersInString("2", "2000000") << endl;
-	
 	for (int n = 1; n <= 100; n++)
 	{
 		for (int r = 1; r < n; r++)
