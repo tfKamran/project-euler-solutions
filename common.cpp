@@ -174,6 +174,16 @@ public:
 			
 			return inputString;
 		}
+		
+		string stringReverse(string inputString)
+		{
+			string returnValue = "";
+			
+			for (int index = 0; index < inputString.length(); index++)
+				returnValue = inputString.substr(index, 1) + returnValue;
+			
+			return returnValue;
+		}
 
 	void writeToFile(string inputFile, string fileContent)
 	{
@@ -427,8 +437,8 @@ public:
 		
 		return returnValue;
 	}
-
-	string raiseToSpecial(string base, int power)
+	
+	string raiseToString(string base, int power)
 	{
 		string returnValue = base;
 		
@@ -436,6 +446,16 @@ public:
 			returnValue = multiply(returnValue, base);
 		
 		return returnValue;
+	}
+	
+	string raiseToString(long long base, int power)
+	{
+		return raiseToString(CStr(base), power);
+	}
+	
+	string raiseToSpecial(string base, int power)
+	{
+		return raiseToString(base, power);
 	}
 
 	string toBinary(long long decimalNumber, int digits)
@@ -728,7 +748,7 @@ public:
 				
 		return true;
 	}
-
+	
 	bool isPalindromic(long long inputNumber)
 	{
 		return isPalindromic(CStr(inputNumber));
@@ -758,5 +778,19 @@ public:
 	{
 		return divide(factorial(n),
 			(multiply(factorial(r), factorial(subtract(n, r)))));
+	}
+	
+	string getConvergentsOf(string startingFraction, vector<long long> coEfficients, string topMostFraction, long long limit)
+	{
+		string result = startingFraction;
+	
+		for (int convergence = limit - 3; convergence >= 0; convergence--)
+			result= addFractionsInString(CStr(coEfficients.at(convergence)) + "/1",
+				divideFractionsInString("1/1", result)
+			);
+		
+		result = addFractionsInString(topMostFraction, divideFractionsInString("1/1", result));
+		
+		return result;
 	}
 } common;

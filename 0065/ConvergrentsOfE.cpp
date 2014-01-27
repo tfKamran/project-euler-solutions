@@ -1,5 +1,5 @@
 #include "../common.cpp"
-#define LIMIT 100 - 2
+#define LIMIT 100
 
 using namespace std;
 
@@ -11,14 +11,7 @@ int main()
 {
 	generateECoEfficientsTill(LIMIT);
 	
-	string e = "1/1";
-	
-	for (int convergence = LIMIT - 1; convergence >= 0; convergence--)
-		e = common.addFractionsInString(common.CStr(eCoEfficients.at(convergence)) + "/1",
-			common.divideFractionsInString("1/1", e)
-		);
-	
-	e = common.addFractionsInString("2/1", common.divideFractionsInString("1/1", e));
+	string e = common.getConvergentsOf("1/1", eCoEfficients, "2/1", LIMIT);
 	
 	cout << "The required numerator is " << common.getNumeratorInString(e) << " and the sum of its digits is " << common.sumOfDigits(common.getNumeratorInString(e)) << endl;
 	
