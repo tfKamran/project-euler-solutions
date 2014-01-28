@@ -13,9 +13,9 @@ static class Common
 {
 public:
 	clock_t startingTime;
-	vector<string> memoiozedStringDivisionsFractions;
-	vector<string> memoiozedStringDivisionsQuotients;
-	vector<string> memoiozedStringFactorials;
+	vector<string> memoizeStringDivisionsFractions;
+	vector<string> memoizeStringDivisionsQuotients;
+	vector<string> memoizeStringFactorials;
 	string inputFromFile[10000];
 	
 public:
@@ -23,8 +23,8 @@ public:
 	{
 		startingTime = clock()/1000;
 		
-		memoiozedStringDivisionsFractions.push_back("null");
-		memoiozedStringDivisionsQuotients.push_back("null");
+		memoizeStringDivisionsFractions.push_back("null");
+		memoizeStringDivisionsQuotients.push_back("null");
 	}
 
 	void finalize()
@@ -318,9 +318,9 @@ public:
 
 	string divide(string number1, string number2)
 	{
-		vector<string>::iterator indexOfMemory = find(memoiozedStringDivisionsFractions.begin(), memoiozedStringDivisionsFractions.end(), number1 + "/" + number2);
-		if (indexOfMemory != memoiozedStringDivisionsFractions.end())
-			return memoiozedStringDivisionsQuotients.at(distance(memoiozedStringDivisionsFractions.begin(), indexOfMemory));
+		vector<string>::iterator indexOfMemory = find(memoizeStringDivisionsFractions.begin(), memoizeStringDivisionsFractions.end(), number1 + "/" + number2);
+		if (indexOfMemory != memoizeStringDivisionsFractions.end())
+			return memoizeStringDivisionsQuotients.at(distance(memoizeStringDivisionsFractions.begin(), indexOfMemory));
 		
 		if (number1.length() < 19)
 			return CStr(CLong(number1) / CLong(number2));
@@ -341,8 +341,8 @@ public:
 		
 		string returnValue = divide(number1, number2, approxQuotient);
 		
-		memoiozedStringDivisionsFractions.insert(memoiozedStringDivisionsFractions.begin(), number1 + "/" + number2);
-		memoiozedStringDivisionsQuotients.insert(memoiozedStringDivisionsQuotients.begin(), returnValue);
+		memoizeStringDivisionsFractions.insert(memoizeStringDivisionsFractions.begin(), number1 + "/" + number2);
+		memoizeStringDivisionsQuotients.insert(memoizeStringDivisionsQuotients.begin(), returnValue);
 		
 		return returnValue;
 	}
@@ -510,8 +510,8 @@ public:
 		if (inputNumber == "0")
 			return "1";
 		
-		if (inputNumber.length() < 19 && memoiozedStringFactorials.size() > CLong(inputNumber))
-			return memoiozedStringFactorials.at(CLong(inputNumber) - 1);
+		if (inputNumber.length() < 19 && memoizeStringFactorials.size() > CLong(inputNumber))
+			return memoizeStringFactorials.at(CLong(inputNumber) - 1);
 		else
 		{
 			if (inputNumber != "1")
@@ -528,10 +528,10 @@ public:
 		for (long long index = 1; index <= limit; index++)
 		{
 			currentFactorial = multiply(currentFactorial, CStr(index));
-			memoiozedStringFactorials.push_back(currentFactorial);
+			memoizeStringFactorials.push_back(currentFactorial);
 		}
 		
-		return memoiozedStringFactorials;
+		return memoizeStringFactorials;
 	}
 
 	long long factorial(long long inputNumber)
