@@ -736,6 +736,21 @@ public:
 		
 		return true;
 	}
+	
+	vector<bool> getPrimesUpto(long long upto)
+	{
+		vector<bool> listOfPrimes(upto + 1, true);
+		listOfPrimes.at(0) = false;
+		listOfPrimes.at(1) = false;
+		for (int index = 0; index <= upto; index++)
+		{
+			if (listOfPrimes.at(index))
+				for (int multiplier = 2; multiplier * index <= upto; multiplier++)
+					listOfPrimes.at(multiplier * index) = false;
+		}
+		
+		return listOfPrimes;
+	}
 
 	bool isPalindromic(string inputNumber)
 	{
@@ -794,3 +809,19 @@ public:
 		return result;
 	}
 } common;
+
+// // Testing zone
+// int main()
+// {
+// 	vector<bool> isPrime = common.getPrimesUpto(10000000);
+// // 	
+// 	for (int index = 0; index < 100; index++)
+// 		if (isPrime.at(index))
+// 			cout << index << endl;
+// 	
+// // 	for (int index = 0; index < 100000; index++)
+// // 		common.isPrime(index);
+// 	
+// 	common.finalize();
+// 	return 0;
+// }
