@@ -24,19 +24,28 @@ function test(problemDir) {
         });
 
         describe('## With test input', function() {
+            const startTime = getTimeInMicroSeconds();
             const testResult = require('./' + problemDir + '/index.js').evaluate(fs.readFileSync(problemDir + '/test-input.txt', 'utf-8'));
+            const timeTaken = getTimeInMicroSeconds() - startTime;
 
             if (fs.existsSync(problemDir + '/test-output.txt')) {
                 const testExpectedOutput = fs.readFileSync(problemDir + '/test-output.txt', 'utf-8');
 
                 it('should return ' + testExpectedOutput, function() {
                     assert.equal(testExpectedOutput, testResult);
+                    console.log('      Took ' + timeTaken + ' micros');
                 });
             } else {
                 it('does it pass?', function() {
-                    console.log('      Nothing to judge yet, the test result is ' + testResult);
+                    console.log('      Nothing to judge yet, the test result is ' + testResult + ' in ' + timeTaken + ' micros');
                 });
             }
         });
     });
+}
+
+function getTimeInMicroSeconds() {
+  var hrTime = process.hrtime();
+
+  return hrTime[0] * 1000000 + parseInt(hrTime[1] / 1000);
 }
