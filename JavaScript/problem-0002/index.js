@@ -1,16 +1,19 @@
 module.exports = {
     evaluate: function(input) {
         const limit = +input;
-        const fibonacci = [1, 2];
+        var sum = 2;
+        var secondLast = 2;
+        var last = 3;
 
-        while ((nextTerm = this.getNextSum(fibonacci)) < limit) {
-            fibonacci.push(nextTerm);
+        while ((nextTerm = last + secondLast) < limit) {
+            secondLast = last;
+            last = nextTerm;
+
+            if (last % 2 == 0) {
+                sum += last;
+            }
         }
 
-        return fibonacci.reduce((total, term) => term % 2 == 0 ? total + term : total) - 1;
-    },
-    getNextSum(fibonacci) {
-        const length = fibonacci.length;
-        return fibonacci[length - 1] + fibonacci[length - 2];
+        return sum;
     }
 }
