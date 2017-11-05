@@ -1,0 +1,22 @@
+{
+  "name": "project-euler-solutions",
+  "version": "1.0.0",
+  "description": "Solutions in JavaScript",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tfKamran/ProjectEulerSolutions.git"
+  },
+  "author": "tfKamran",
+  "bugs": {
+    "url": "https://github.com/tfKamran/ProjectEulerSolutions/issues"
+  },
+  "homepage": "https://github.com/tfKamran/ProjectEulerSolutions#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "mocha": "^4.0.1",
+    "yargs": "^10.0.3"
+  }
+}
