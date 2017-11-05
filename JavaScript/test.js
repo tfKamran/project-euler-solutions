@@ -2,14 +2,34 @@ const assert = require('assert');
 const fs = require('fs');
 const specifiedProblem = require('yargs').argv.problem;
 
-const problems = fs.readdirSync('./').filter(item => item.startsWith('problem-'));
+const common = require('./common');
 
 if (specifiedProblem) {
     test(specifiedProblem);
 } else {
     console.log("\nYou can test a particular solution by specifying the directory:\n\n\t Example: mocha test.js --problem problem-0001");
 
-    problems.forEach(test);
+    testAllProblems();
+
+    testCommon();
+}
+
+function testAllProblems() {
+    fs.readdirSync('./').filter(item => item.startsWith('problem-')).forEach(test);
+}
+
+function testCommon() {
+    describe('# Common functions', function() {
+        describe('## isPalindrome', function() {
+            it('should return true for Palindrome', function() {
+                assert.equal(true, common.isPalindrome(9009));
+            });
+
+            it('should return false for non Palindrome', function() {
+                assert.equal(false, common.isPalindrome(9609));
+            });
+        });
+    });
 }
 
 function test(problemDir) {
