@@ -9,8 +9,6 @@ module.exports = {
         const maxNumber = this.getMaximumNumber(numberOfDigits);
         const minNumber = this.getMinimumNumber(numberOfDigits);
 
-        console.log('Starting with ' + maxNumber);
-
         const palindromes = [];
 
         for (var multiplicand = maxNumber; multiplicand > minNumber; multiplicand--) {
