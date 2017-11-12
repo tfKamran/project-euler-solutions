@@ -29,6 +29,16 @@ function testCommon() {
                 assert.equal(false, common.isPalindrome(9609));
             });
         });
+
+        describe('## isPrimeNumber', function() {
+            it('should return true for prime number', function() {
+                assert.equal(true, common.isPrimeNumber(7));
+            });
+
+            it('should return false for non prime number', function() {
+                assert.equal(false, common.isPrimeNumber(15));
+            });
+        });
     });
 }
 
