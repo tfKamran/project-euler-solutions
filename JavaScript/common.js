@@ -15,5 +15,16 @@ module.exports = {
         for (var index = 2; (index <= number / 2) && (isPrime &= (number % index != 0)); index++);
 
         return isPrime;
+    },
+    getPrimeNumbers: function(count) {
+        const primeNumbers = [];
+
+        for (var index = 2; primeNumbers.length < count; index++) {
+            if (primeNumbers.filter(prime => index % prime == 0).length == 0) {
+                primeNumbers.push(index);
+            }
+        }
+
+        return primeNumbers;
     }
 }

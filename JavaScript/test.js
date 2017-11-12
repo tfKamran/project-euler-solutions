@@ -39,6 +39,16 @@ function testCommon() {
                 assert.equal(false, common.isPrimeNumber(15));
             });
         });
+
+        describe('## getPrimeNumbers', function() {
+            it('should return first prime number', function() {
+                assert.deepEqual([2], common.getPrimeNumbers(1));
+            });
+
+            it('should return first five prime numbers', function() {
+                assert.deepEqual([2, 3, 5, 7, 11], common.getPrimeNumbers(5));
+            });
+        });
     });
 }
 
