@@ -20,7 +20,15 @@ module.exports = {
         const primeNumbers = [];
 
         for (var index = 2; primeNumbers.length < count; index++) {
-            if (primeNumbers.filter(prime => index % prime == 0).length == 0) {
+            var primeIndex = 0;
+
+            for (; primeIndex < primeNumbers.length; primeIndex++) {
+                if (index % primeNumbers[primeIndex] == 0) {
+                    break;
+                }
+            }
+
+            if (primeIndex == primeNumbers.length) {
                 primeNumbers.push(index);
             }
         }
