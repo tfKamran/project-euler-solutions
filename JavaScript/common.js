@@ -16,10 +16,10 @@ module.exports = {
 
         return isPrime;
     },
-    getPrimeNumbers: function(count) {
-        const primeNumbers = [];
+    getPrimeNumbers: function(condition) {
+        const primeNumbers = [2];
 
-        for (var index = 2; primeNumbers.length < count; index++) {
+        for (var index = 3; condition(primeNumbers, index); index++) {
             var primeIndex = 0;
 
             for (; primeIndex < primeNumbers.length; primeIndex++) {

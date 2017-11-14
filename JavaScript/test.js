@@ -42,11 +42,15 @@ function testCommon() {
 
         describe('## getPrimeNumbers', function() {
             it('should return first prime number', function() {
-                assert.deepEqual([2], common.getPrimeNumbers(1));
+                assert.deepEqual([2], common.getPrimeNumbers(primeNumbers => primeNumbers.length < 1));
             });
 
             it('should return first five prime numbers', function() {
-                assert.deepEqual([2, 3, 5, 7, 11], common.getPrimeNumbers(5));
+                assert.deepEqual([2, 3, 5, 7, 11], common.getPrimeNumbers(primeNumbers => primeNumbers.length < 5));
+            });
+
+            it('should return prime numbers lesser than 10', function() {
+                assert.deepEqual([2, 3, 5, 7], common.getPrimeNumbers((primeNumbers, currentNumber) => currentNumber < 10));
             });
         });
     });
