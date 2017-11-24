@@ -12,23 +12,15 @@ module.exports = {
     isPrimeNumber: function(number) {
         var isPrime = true;
 
-        for (var index = 2; (index <= number / 2) && (isPrime &= (number % index != 0)); index++);
+        for (var index = 3; (index <= Math.sqrt(number)) && (isPrime &= (number % index != 0)); index += 2);
 
         return isPrime;
     },
     getPrimeNumbers: function(condition) {
         const primeNumbers = [2];
 
-        for (var index = 3; condition(primeNumbers, index); index++) {
-            var primeIndex = 0;
-
-            for (; primeIndex < primeNumbers.length; primeIndex++) {
-                if (index % primeNumbers[primeIndex] == 0) {
-                    break;
-                }
-            }
-
-            if (primeIndex == primeNumbers.length) {
+        for (var index = 3; condition(primeNumbers, index); index += 2) {
+            if (this.isPrimeNumber(index)) {
                 primeNumbers.push(index);
             }
         }
