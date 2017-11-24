@@ -3,15 +3,13 @@ module.exports = {
         const maxNumber = +input;
 
         var sum = 2;
-        const primeNumbers = [2];
 
         for (var index = 3; index < maxNumber; index += 2) {
-            var primeIndex = 0;
+            var isPrime = true;
 
-            for (; primeIndex < primeNumbers.length && index % primeNumbers[primeIndex] != 0; primeIndex++);
+            for (var divisor = 3; (divisor <= Math.sqrt(index)) && (isPrime &= (index % divisor != 0)); divisor += 2);
 
-            if (primeIndex == primeNumbers.length) {
-                primeNumbers.push(index);
+            if (isPrime) {
                 sum += index;
             }
         }
