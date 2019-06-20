@@ -16,7 +16,7 @@
   "homepage": "https://github.com/tfKamran/ProjectEulerSolutions#readme",
   "dependencies": {
     "fs": "0.0.1-security",
-    "mocha": "^4.0.1",
-    "yargs": "^10.0.3"
+    "mocha": "^6.1.4",
+    "yargs": "^13.2.4"
   }
 }
